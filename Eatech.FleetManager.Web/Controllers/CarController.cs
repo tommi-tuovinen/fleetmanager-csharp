@@ -24,18 +24,14 @@ namespace Eatech.FleetManager.Web.Controllers
         [HttpGet]
         public async Task<IEnumerable<CarDto>> Get()
         {
-            return (await _carService.GetAll()).Select(c => new CarDto
-            {
-                Id = c.Id,
-                ModelYear = c.ModelYear
-            });
+            return (await _carService.GetAll()).Select(c => new CarDto(c));
         }
 
         /// <summary>
         ///     Example HTTP GET: api/car/570890e2-8007-4e5c-a8d6-c3f670d8a9be
         /// </summary>
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(Guid id)
+        public async Task<IActionResult> Get(string id)
         {
             var car = await _carService.Get(id);
             if (car == null)
@@ -43,11 +39,7 @@ namespace Eatech.FleetManager.Web.Controllers
                 return NotFound();
             }
 
-            return Ok(new CarDto
-            {
-                Id = car.Id,
-                ModelYear = car.ModelYear
-            });
+            return Ok(new CarDto(car));
         }
     }
 }
