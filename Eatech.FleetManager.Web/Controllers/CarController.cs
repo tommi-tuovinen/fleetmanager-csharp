@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Eatech.FleetManager.ApplicationCore.Entities;
@@ -69,7 +68,7 @@ namespace Eatech.FleetManager.Web.Controllers
         }
 
         /// <summary>
-        /// Updates a car with matching id. 
+        /// Updates a car with matching id.
         /// </summary>
         /// <param name="id"></param>
         /// <param name="carIn"></param>
