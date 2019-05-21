@@ -10,5 +10,11 @@ namespace Eatech.FleetManager.ApplicationCore.Interfaces
         Task<IEnumerable<Car>> GetAll();
 
         Task<Car> Get(string id);
+
+        Task<Car> Create(Car car);
+
+        Task Update(string id, Car CarIn);
+
+        Task Remove(string id);
     }
 }

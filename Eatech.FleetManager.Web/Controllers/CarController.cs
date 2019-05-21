@@ -41,5 +41,52 @@ namespace Eatech.FleetManager.Web.Controllers
 
             return Ok(new CarDto(car));
         }
+
+        /// <summary>
+        ///     Example HTTP POST: api/car/570890e2-8007-4e5c-a8d6-c3f670d8a9be
+        /// </summary>
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] Car car)
+        {
+            await _carService.Create(car);
+
+            return CreatedAtAction(nameof(Get), new { id = car.Id }, car);
+        }
+
+        /// <summary>
+        ///     Example HTTP PUT: api/car/570890e2-8007-4e5c-a8d6-c3f670d8a9be
+        /// </summary>
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(string id, [FromBody] Car carIn)
+        {
+            var car = await _carService.Get(id);
+
+            if (car == null)
+            {
+                return NotFound();
+            }
+
+            await _carService.Update(id, carIn);
+
+            return NoContent();
+        }
+
+        /// <summary>
+        ///     Example HTTP DELETE: api/car/570890e2-8007-4e5c-a8d6-c3f670d8a9be
+        /// </summary>
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var car = await _carService.Get(id);
+
+            if (car == null)
+            {
+                return NotFound();
+            }
+
+            await _carService.Remove(car.Id);
+
+            return NoContent();
+        }
     }
 }
