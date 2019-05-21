@@ -19,12 +19,13 @@ namespace Eatech.FleetManager.Web.Controllers
         }
 
         /// <summary>
-        ///     Example HTTP GET: api/car
+        ///     Example HTTP GET: api/car?minYear=1988&maxYear=1999&make=make2&model=model2
         /// </summary>
         [HttpGet]
-        public async Task<IEnumerable<CarDto>> Get()
+        public async Task<IEnumerable<CarDto>> Get([FromQuery]int? minYear, [FromQuery]int? maxYear,
+            [FromQuery]string make, [FromQuery]string model)
         {
-            return (await _carService.GetAll()).Select(c => new CarDto(c));
+            return (await _carService.GetAll(minYear, maxYear, make, model)).Select(c => new CarDto(c));
         }
 
         /// <summary>

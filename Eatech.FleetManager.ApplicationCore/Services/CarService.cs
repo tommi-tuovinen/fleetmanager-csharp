@@ -17,9 +17,21 @@ namespace Eatech.FleetManager.ApplicationCore.Services
             context = new DataContext(config);
         }
 
-        public async Task<IEnumerable<Car>> GetAll()
+        public async Task<IEnumerable<Car>> GetAll(int? minYear, int? maxYear, string make, string model)
         {
-            return await context.Cars.Find(_ => true).ToListAsync();
+            if (minYear == null && maxYear == null && make == null && model == null)
+            {
+                return await context.Cars.Find(_ => true).ToListAsync();
+            }
+
+            var builder = Builders<Car>.Filter;
+            var filter = builder.Gte(car => car.ModelYear, minYear ?? 0) &
+                         builder.Lte(car => car.ModelYear, maxYear ?? 9999) &
+                         builder.Regex(car => car.Make, ".*" + make + ".*") &
+                         builder.Regex(car => car.Model, ".*" + model + ".*");
+            var query = context.Cars.Find(filter);
+
+            return await query.ToListAsync();
         }
 
         public async Task<Car> Get(string id)

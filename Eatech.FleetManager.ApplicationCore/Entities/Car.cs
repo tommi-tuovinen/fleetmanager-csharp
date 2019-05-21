@@ -11,6 +11,7 @@ namespace Eatech.FleetManager.ApplicationCore.Entities
         [BsonIgnoreIfDefault]
         public string Id { get; set; }
 
+        [BsonRepresentation(BsonType.Int32)]
         [BsonElement("year")]
         public int? ModelYear { get; set; }
 
