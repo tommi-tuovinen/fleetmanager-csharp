@@ -1,5 +1,5 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
+using Eatech.FleetManager.ApplicationCore.Entities;
 using Eatech.FleetManager.ApplicationCore.Interfaces;
 using Eatech.FleetManager.ApplicationCore.Services;
 using Xunit;
@@ -11,9 +11,12 @@ namespace Eatech.FleetManager.UnitTests.ApplicationCore.Services.CarServiceTests
         [Fact]
         public async void AllCars()
         {
-            ICarService carService = new CarService();
+            IDataContext testContext = new TestDataContext();
+            ICarService carService = new CarService(new TestDataContext());
+            testContext.Cars.InsertOne(new Car());
+            testContext.Cars.InsertOne(new Car());
 
-            var cars = (await carService.GetAll()).ToList();
+            var cars = (await carService.GetAll(null, null, null, null)).ToList();
 
             Assert.NotNull(cars);
             Assert.NotEmpty(cars);
@@ -23,20 +26,23 @@ namespace Eatech.FleetManager.UnitTests.ApplicationCore.Services.CarServiceTests
         [Fact]
         public async void ExistingCardWithId()
         {
-            ICarService carService = new CarService();
-            var carId = Guid.Parse("d9417f10-5c79-44a0-9137-4eba914a82a9");
+            IDataContext testContext = new TestDataContext();
+            var carInDb = new Car();
+            testContext.Cars.InsertOne(carInDb);
 
-            var car = await carService.Get(carId);
+            ICarService carService = new CarService(testContext);
+
+            var car = await carService.Get(carInDb.Id);
 
             Assert.NotNull(car);
-            Assert.Equal(carId, car.Id);
+            Assert.Equal(carInDb.Id, car.Id);
         }
 
         [Fact]
         public async void NonExistingCardWithId()
         {
-            ICarService carService = new CarService();
-            var carId = Guid.Parse("d9417f10-1111-1111-1111-4eba914a82a9");
+            ICarService carService = new CarService(new TestDataContext());
+            var carId = "5ce30b3fa7c3d01d0cd92499";
 
             var car = await carService.Get(carId);
 
