@@ -1,20 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Eatech.FleetManager.ApplicationCore.Contexts;
 using Eatech.FleetManager.ApplicationCore.Entities;
 using Eatech.FleetManager.ApplicationCore.Interfaces;
-using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 
 namespace Eatech.FleetManager.ApplicationCore.Services
 {
     public class CarService : ICarService
     {
-        private readonly DataContext context;
+        private readonly IDataContext context;
 
-        public CarService(IConfiguration config)
+        public CarService(IDataContext dataContext)
         {
-            context = new DataContext(config);
+            context = dataContext;
         }
 
         public async Task<IEnumerable<Car>> GetAll(int? minYear, int? maxYear, string make, string model)

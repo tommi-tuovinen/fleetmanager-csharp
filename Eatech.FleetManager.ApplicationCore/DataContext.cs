@@ -1,10 +1,11 @@
 ﻿using Eatech.FleetManager.ApplicationCore.Entities;
+using Eatech.FleetManager.ApplicationCore.Interfaces;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 
-namespace Eatech.FleetManager.ApplicationCore.Contexts
+namespace Eatech.FleetManager.ApplicationCore
 {
-    public class DataContext
+    public class DataContext : IDataContext
     {
         private readonly IMongoDatabase _db;
 

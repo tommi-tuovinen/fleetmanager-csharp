@@ -1,4 +1,5 @@
-﻿using Eatech.FleetManager.ApplicationCore.Interfaces;
+﻿using Eatech.FleetManager.ApplicationCore;
+using Eatech.FleetManager.ApplicationCore.Interfaces;
 using Eatech.FleetManager.ApplicationCore.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -24,6 +25,7 @@ namespace Eatech.FleetManager.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddScoped<IDataContext, DataContext>();
             services.AddScoped<ICarService, CarService>();
 
             services.AddSwaggerGen(c =>
