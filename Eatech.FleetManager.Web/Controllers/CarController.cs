@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Eatech.FleetManager.Web.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/car")]
     public class CarController : Controller
     {
         private readonly ICarService _carService;
@@ -19,8 +19,14 @@ namespace Eatech.FleetManager.Web.Controllers
         }
 
         /// <summary>
-        ///     Example HTTP GET: api/car?minYear=1988&maxYear=1999&make=make2&model=model2
+        /// Lists cars filtered by given parameters.
         /// </summary>
+        /// <param name="minYear"></param>
+        /// <param name="maxYear"></param>
+        /// <param name="make"></param>
+        /// <param name="model"></param>
+        /// <response code="200">Returns cars</response>
+        [ProducesResponseType(200)]
         [HttpGet]
         public async Task<IEnumerable<CarDto>> Get([FromQuery]int? minYear, [FromQuery]int? maxYear,
             [FromQuery]string make, [FromQuery]string model)
@@ -29,8 +35,13 @@ namespace Eatech.FleetManager.Web.Controllers
         }
 
         /// <summary>
-        ///     Example HTTP GET: api/car/570890e2-8007-4e5c-a8d6-c3f670d8a9be
+        /// Gets a car by id.
         /// </summary>
+        /// <param name="id"></param>
+        /// <response code="200">Returns car</response>
+        /// <response code="404">If not found</response>
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
@@ -44,8 +55,11 @@ namespace Eatech.FleetManager.Web.Controllers
         }
 
         /// <summary>
-        ///     Example HTTP POST: api/car/570890e2-8007-4e5c-a8d6-c3f670d8a9be
+        /// Creates a new car.
         /// </summary>
+        /// <param name="car"></param>
+        /// <response code="201">Returns newly created car</response>
+        [ProducesResponseType(201)]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Car car)
         {
@@ -55,8 +69,14 @@ namespace Eatech.FleetManager.Web.Controllers
         }
 
         /// <summary>
-        ///     Example HTTP PUT: api/car/570890e2-8007-4e5c-a8d6-c3f670d8a9be
+        /// Updates a car with matching id. 
         /// </summary>
+        /// <param name="id"></param>
+        /// <param name="carIn"></param>
+        /// <response code="204">Returns no content on success</response>
+        /// <response code="404">If not found</response>
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(string id, [FromBody] Car carIn)
         {
@@ -68,13 +88,17 @@ namespace Eatech.FleetManager.Web.Controllers
             }
 
             await _carService.Update(id, carIn);
-
             return NoContent();
         }
 
         /// <summary>
-        ///     Example HTTP DELETE: api/car/570890e2-8007-4e5c-a8d6-c3f670d8a9be
+        /// Deletes a car with given id.
         /// </summary>
+        /// <param name="id"></param>
+        /// <response code="204">Returns no content on success</response>
+        /// <response code="404">If not found</response>
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
@@ -86,7 +110,6 @@ namespace Eatech.FleetManager.Web.Controllers
             }
 
             await _carService.Remove(car.Id);
-
             return NoContent();
         }
     }
