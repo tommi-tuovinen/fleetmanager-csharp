@@ -4,6 +4,10 @@ using Eatech.FleetManager.ApplicationCore.Interfaces;
 using Eatech.FleetManager.ApplicationCore.Services;
 using Xunit;
 
+// Running tests in parallel is disabled in order to ensure that counting documents returns the wanted result.
+// TODO: Remove this when each test uses separate db collection or
+//      tests are run without an actual db.
+[assembly: CollectionBehavior(DisableTestParallelization = true)]
 namespace Eatech.FleetManager.UnitTests.ApplicationCore.Services.CarServiceTests
 {
     public class CarGet
