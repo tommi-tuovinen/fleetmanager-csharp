@@ -17,16 +17,25 @@ namespace Eatech.FleetManager.ApplicationCore.Services
 
         public async Task<IEnumerable<Car>> GetAll(int? minYear, int? maxYear, string make, string model)
         {
-            if (minYear == null && maxYear == null && make == null && model == null)
-            {
-                return await context.Cars.Find(_ => true).ToListAsync();
-            }
-
             var builder = Builders<Car>.Filter;
-            var filter = builder.Gte(car => car.ModelYear, minYear ?? 0) &
-                         builder.Lte(car => car.ModelYear, maxYear ?? 9999) &
-                         builder.Regex(car => car.Make, ".*" + make + ".*") &
-                         builder.Regex(car => car.Model, ".*" + model + ".*");
+            var filter = builder.Empty;
+
+            if (minYear != null)
+            {
+                filter = filter & builder.Gte(car => car.ModelYear, minYear ?? 0);
+            }
+            if (maxYear != null)
+            {
+                filter = filter & builder.Lte(car => car.ModelYear, maxYear ?? 9999);
+            }
+            if (make != null)
+            {
+                filter = filter & builder.Regex(car => car.Make, ".*" + make + ".*");
+            }
+            if (model != null)
+            {
+                filter = filter & builder.Regex(car => car.Model, ".*" + model + ".*");
+            }
             var query = context.Cars.Find(filter);
 
             return await query.ToListAsync();
