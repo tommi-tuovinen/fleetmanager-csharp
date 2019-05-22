@@ -12,3 +12,4 @@ When application is running Swagger documentation can be found in following url:
 
 ## TODO
 * Searching with id that is not valid as a Bson ObjectId should result in 422 HTTP status code instead of an internal server error.
+* More unit tests.
